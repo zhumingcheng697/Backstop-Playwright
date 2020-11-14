@@ -1,4 +1,4 @@
-# BackstopJS-Playwright
+# Backstop-Playwright
 
 **This is a fork of BackstopJS. This version uses Playwright instead of Puppeteer as the engine.**
 
@@ -43,7 +43,7 @@ This version *should* works exactly like BackstopJS except you can explicitly de
 - Simulate user interactions with **Playwright** scripts (maybe?)
 - JUnit reports
 - Plays nice with CI and source control
-- Run globally or locally as a standalone package app or `require('backstopjs-playwright')` right into your node app
+- Run globally or locally as a standalone package app or `require('backstop-playwright')` right into your node app
 - Incredibly easy to use: just 3 commands go a long long way!
 
 ![BackstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
@@ -51,7 +51,7 @@ This version *should* works exactly like BackstopJS except you can explicitly de
 
 ## Install BackstopJS now
 ```sh
-$ npm install -g backstopjs-playwright
+$ npm install -g backstop-playwright
 ```
 
 ----
@@ -90,13 +90,13 @@ $ npm install -g backstopjs-playwright
 
 #### Global installation (recommended)
 ```sh
-$ npm install -g backstopjs-playwright
+$ npm install -g backstop-playwright
 ```
 #### Local installation
 
 BackstopJS will run as a totally stand alone app -- but installing locally allows you to do this...
 ```js
-const backstop = require('backstopjs-playwright');
+const backstop = require('backstop-playwright');
 ```
 
 See [Integration Options](#integration-options-local-install) to learn about cool BackstopJS integration options!
@@ -634,7 +634,7 @@ backstop test --docker
 or for a local install
 
 ```js
-const backstop = require('backstopjs-playwright');
+const backstop = require('backstop-playwright');
 backstop('test', {docker: true});
 ```
 
@@ -664,7 +664,7 @@ Using Backstop as a locally installed standalone app looks like this....
 
 ```sh
 # Install from your project root
-npm install backstopjs-playwright
+npm install backstop-playwright
 
 # Then, run commands by directly calling the cli
 ./node_modules/.bin/backstop test --config=<myConfigPath>
@@ -673,7 +673,7 @@ npm install backstopjs-playwright
 The more interesting case is calling backstop from another node app...
 
 ```js
-const backstop = require('backstopjs-playwright');
+const backstop = require('backstop-playwright');
 ```
 
 #### Invoke default behavior in the current working directory context
@@ -738,7 +738,7 @@ module.exports = options => {
 #### Since the backstop returns promises so it can run natively as a task in build systems like gulp
 ```js
 const gulp = require('gulp');
-const backstop = require('backstopjs-playwright');
+const backstop = require('backstop-playwright');
 
 gulp.task('backstop_reference', () => backstop('reference'));
 gulp.task('backstop_test', () => backstop('test'));
@@ -909,14 +909,14 @@ See the next section for running the SMOKE TEST -- Please make sure this is work
 Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Please make sure you have node version 8 or above. Windows users: Powershell is recommended._
 
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs-playwright; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstop-playwright; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test
 
 ```
 
 Here is a sanity test which also uses docker...
 
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs-playwright; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test --docker
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstop-playwright; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test --docker
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
@@ -971,7 +971,7 @@ Sometimes when developing scripts -- browser errors can actually cause Chrome-He
 
 ### The dreaded: _command-not-found_ error...
 
-Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install -g backstopjs-playwright`. If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the [local installation section](#local-installation) above for more info.
+Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install -g backstop-playwright`. If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the [local installation section](#local-installation) above for more info.
 
 ### Issues when installing
 

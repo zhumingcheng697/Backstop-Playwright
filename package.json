@@ -1,5 +1,5 @@
 {
-  "name": "backstopjs-playwright",
+  "name": "backstop-playwright",
   "version": "0.0.1",
   "description": "A BackstopJS fork using Playwright as engine. Choose your own browser type.",
   "bin": {
