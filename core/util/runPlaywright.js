@@ -1,5 +1,5 @@
 const MERGE_IMG_SEGMENT_HEIGHT = 2000;
-const puppeteer = require('puppeteer');
+const playwright = require('puppeteer');
 
 const mergeImg = require('merge-img');
 const fs = require('./fs');
@@ -9,7 +9,6 @@ const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
 
-const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
@@ -53,16 +52,17 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
 
-  const puppeteerArgs = Object.assign(
+  const playwrightArgs = Object.assign(
     {},
     {
+      browserType: 'chromium',
       ignoreHTTPSErrors: true,
       headless: !config.debugWindow
     },
     config.engineOptions
   );
 
-  const browser = await puppeteer.launch(puppeteerArgs);
+  const browser = await playwright.launch(playwrightArgs);
   const page = await browser.newPage();
 
   await page.setViewport({ width: VP_W, height: VP_H });
@@ -91,17 +91,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
   });
 
-  let chromeVersion = await page.evaluate(_ => {
-    let v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
-    return v ? parseInt(v[2], 10) : 0;
-  });
-
-  if (chromeVersion < MIN_CHROME_VERSION) {
-    console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
-  }
-
   let result;
-  const puppetCommands = async () => {
+  const playwrightCommands = async () => {
     // --- BEFORE SCRIPT ---
     var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
     if (onBeforeScript) {
@@ -223,8 +214,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   };
 
   let error;
-  await puppetCommands().catch(e => {
-    console.log(chalk.red(`Puppeteer encountered an error while running scenario "${scenario.label}"`));
+  await playwrightCommands().catch(e => {
+    console.log(chalk.red(`Playwright encountered an error while running scenario "${scenario.label}"`));
     console.log(chalk.red(e));
     error = e;
   });
@@ -432,8 +423,8 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             });
           }
 
-          var type = config.puppeteerOffscreenCaptureFix ? page : el;
-          var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
+          var type = config.playwrightOffscreenCaptureFix ? page : el;
+          var params = config.playwrightOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
 
           await type.screenshot(params);
         } else {
