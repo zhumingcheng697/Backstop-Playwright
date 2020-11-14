@@ -39,9 +39,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/garris/backstopjs.git"
+    "url": "https://github.com/zhumingcheng697/Backstop-Playwright"
   },
-  "author": "https://github.com/garris/BackstopJS/graphs/contributors",
+  "author": {
+    "name": "McCoy Zhu",
+    "email": "mccoy.zhu@nyu.edu",
+    "url": "https://github.com/zhumingcheng697"
+  },
+  "contributors": [
+    "https://github.com/garris",
+    "https://github.com/garris/BackstopJS/graphs/contributorst"
+  ],
   "license": "MIT",
   "main": "core/runner.js",
   "devDependencies": {
