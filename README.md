@@ -835,7 +835,7 @@ One of the things Backstop does for you is manage all your screenshot files.  Ba
 ```js
 {
   // ...
-  fileNameTemplate: '{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}',
+  fileNameTemplate: '{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}_{browserType}',
   // ...
 }
 ```

@@ -48,7 +48,7 @@ function makeSafe (str) {
   return str.replace(/[ /]/g, '_');
 }
 
-function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenarioIndex, scenarioLabelSafe, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
+function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenarioIndex, scenarioLabelSafe, selectorIndex, selectorLabel, viewportIndex, viewportLabel, browserType) {
   var fileName = fileNameTemplate
     .replace(/\{configId\}/, configId)
     .replace(/\{scenarioIndex\}/, scenarioIndex)
@@ -57,6 +57,7 @@ function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenar
     .replace(/\{selectorLabel\}/, selectorLabel)
     .replace(/\{viewportIndex\}/, viewportIndex)
     .replace(/\{viewportLabel\}/, makeSafe(viewportLabel))
+    .replace(/\{browserType\}/, browserType)
     .replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
 
   var extRegExp = new RegExp(outputFileFormatSuffix + '$', 'i');
@@ -93,7 +94,8 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     selectorIndex,
     cleanedSelectorName,
     viewport.vIndex,
-    viewport.label
+    viewport.label,
+    (config.engineOptions && config.engineOptions.browserType) || 'chromium'
   );
   const referenceFilePath = config._bitmapsReferencePath + '/' + getFilename(
     config._fileNameTemplate,
@@ -104,7 +106,8 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     selectorIndex,
     cleanedSelectorName,
     viewport.vIndex,
-    viewport.label
+    viewport.label,
+    (config.engineOptions && config.engineOptions.browserType) || 'chromium'
   );
   const testFilePath = config._bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
 
