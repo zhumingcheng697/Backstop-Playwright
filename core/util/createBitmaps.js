@@ -3,7 +3,7 @@ var fs = require('./fs');
 var each = require('./each');
 var pMap = require('p-map');
 
-var runPuppet = require('./runPuppet');
+var runPuppet = require('./runPlaywright');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
