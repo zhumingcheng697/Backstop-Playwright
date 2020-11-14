@@ -2,9 +2,7 @@
 
 **This is a fork of BackstopJS. This version uses Playwright instead of Puppeteer as the engine.**
 
-This version *should* works exactly like BackstopJS except you can explicitly declare a compatible browser type.
-
-You can specify the browser type by specifying the `browserType` parameter `engineOptions` in your `backstop.json` config file, which accepts three values `"chromium"`, `"firefox"`, and `"webkit"`
+This version *should* works exactly like BackstopJS except you can explicitly declare a compatible browser type by specifying the `browserType` parameter `engineOptions` in your `backstop.json` config file, which accepts three values `"chromium"`, `"firefox"`, and `"webkit"`. The default browser type will still be Chromium if unset.
 
 ```
 "engineOptions": {
@@ -14,6 +12,8 @@ You can specify the browser type by specifying the `browserType` parameter `engi
 
 }
 ```
+
+> Features previously specific to Puppeteer might also work for Playwright, but there is no guarantee.
 
 -----
 
@@ -39,11 +39,11 @@ You can specify the browser type by specifying the `browserType` parameter `engi
 
 - Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
-- Render tests with **Chrome Headless**
-- Simulate user interactions with **Puppeteer** scripts
+- Render tests with Headless version of **Chromium, Firefox, or WebKit**
+- Simulate user interactions with **Playwright** scripts (maybe?)
 - JUnit reports
 - Plays nice with CI and source control
-- Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
+- Run globally or locally as a standalone package app or `require('backstopjs-playwright')` right into your node app
 - Incredibly easy to use: just 3 commands go a long long way!
 
 ![BackstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
@@ -51,7 +51,7 @@ You can specify the browser type by specifying the `browserType` parameter `engi
 
 ## Install BackstopJS now
 ```sh
-$ npm install -g backstopjs
+$ npm install -g backstopjs-playwright
 ```
 
 ----
@@ -90,13 +90,13 @@ $ npm install -g backstopjs
 
 #### Global installation (recommended)
 ```sh
-$ npm install -g backstopjs
+$ npm install -g backstopjs-playwright
 ```
 #### Local installation
 
 BackstopJS will run as a totally stand alone app -- but installing locally allows you to do this...
 ```js
-const backstop = require('backstopjs');
+const backstop = require('backstopjs-playwright');
 ```
 
 See [Integration Options](#integration-options-local-install) to learn about cool BackstopJS integration options!
@@ -197,9 +197,9 @@ removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
 keyPressSelectors        // Takes array of selector and string values -- simulates multiple sequential keypress interactions.
 hoverSelector            // Move the pointer over the specified DOM element prior to screen shot.
-hoverSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential hover interactions.
+hoverSelectors           // takes array of selectors -- simulates multiple sequential hover interactions.
 clickSelector            // Click the specified DOM element prior to screen shot.
-clickSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential click interactions.
+clickSelectors           // takes array of selectors -- simulates multiple sequential click interactions.
 postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Idea for use with a click or hover element transition. available with default onReadyScript)
 scrollToSelector         // Scrolls the specified DOM element into view prior to screen shot (available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
@@ -220,7 +220,7 @@ The above would tell BackstopJS to wait for your app to generate an element with
 
 You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
 
-NOTE: Puppeteer version optionally takes `clickSelectors` & `hoverSelectors` as arrays of selectors...
+NOTE: Playwright version optionally takes `clickSelectors` & `hoverSelectors` as arrays of selectors... (maybe?)
 ```js
 clickSelectors: [".my-hamburger-menu",".my-hamburger-item"],
 hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
@@ -228,7 +228,7 @@ hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
 
 ### Key Press interactions
 BackstopJS ships with an onReady script that allows user to key press on selectors...
-NOTE: Supports Puppeteer and takes arrays of selectors and key press values.
+NOTE: Supports Playwright (maybe?) and takes arrays of selectors and key press values.
 
 ```json
 scenarios: [
@@ -510,11 +510,11 @@ By default the base path is a folder called `engine_scripts` inside your Backsto
 onBefore(engine, scenario, viewport, isReference, Engine, config)
 
 ```
-engine:      puppeteer engine instance
+engine:      playwright engine instance (maybe?)
 scenario:    currently running scenario config
 viewport:    viewport info
 isReference: whether scenario contains reference URL property
-Engine:      Static class reference (Puppeteer)
+Engine:      Static class reference (Playwright?)
 config:      the whole config object
 ```
 
@@ -594,10 +594,10 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
 ```
 
 ### Changing the rendering engine
-Puppeteer is currently the default value and will be installed by default.
+Playwright is currently the default value and will be installed by default.
 
-### Setting Puppeteer option flags
-Backstop sets two defaults for Puppeteer:
+### Setting Playwright option flags
+Backstop sets two defaults for Playwright:
 
 ```json
 ignoreHTTPSErrors: true,
@@ -612,8 +612,6 @@ You can add more settings (or override the defaults) with the engineOptions prop
   "args": ["--no-sandbox", "--disable-setuid-sandbox"]
 }
 ```
-
-More info here: [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
 
 ### Using Docker for testing across different environments
 We've found that different environments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
@@ -636,7 +634,7 @@ backstop test --docker
 or for a local install
 
 ```js
-const backstop = require('backstopjs');
+const backstop = require('backstopjs-playwright');
 backstop('test', {docker: true});
 ```
 
@@ -651,24 +649,7 @@ If the default docker command or image does not work for you, you can customize 
 *Tip: to run BackstopJS in Docker in an environment where the output is piped (e.g. CI server or an IDE's output window), remove the -t parameter (change the default to "docker run --rm -i --mount...)*
 
 #### Requirements for when you're using docker...
-**1) If you are using a config generated prior to version 3.5 and you get an error like this...**
-
-```
-  COMMAND | Command "test" ended with an error after [0.312s]
-  COMMAND | Error: Failed to launch chrome!
-            ... Running as root without --no-sandbox is not supported. See https://crbug.com/638180.
-            TROUBLESHOOTING: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
-```
-
-then you need to add this to the root of your config...
-
-```js
-"engineOptions": {
-    "args": ["--no-sandbox"]
-},
-```
-
-**2) `localhost` won't work in your scenarios -- instead, mac and win users can use `host.docker.internal` e.g.**
+**`localhost` won't work in your scenarios -- instead, mac and win users can use `host.docker.internal` e.g.**
 
 ```json
 "url": "https://host.docker.internal/?someCoolAppParameter=true"
@@ -683,7 +664,7 @@ Using Backstop as a locally installed standalone app looks like this....
 
 ```sh
 # Install from your project root
-npm install backstopjs
+npm install backstopjs-playwright
 
 # Then, run commands by directly calling the cli
 ./node_modules/.bin/backstop test --config=<myConfigPath>
@@ -692,7 +673,7 @@ npm install backstopjs
 The more interesting case is calling backstop from another node app...
 
 ```js
-const backstop = require('backstopjs');
+const backstop = require('backstopjs-playwright');
 ```
 
 #### Invoke default behavior in the current working directory context
@@ -757,7 +738,7 @@ module.exports = options => {
 #### Since the backstop returns promises so it can run natively as a task in build systems like gulp
 ```js
 const gulp = require('gulp');
-const backstop = require('backstopjs');
+const backstop = require('backstopjs-playwright');
 
 gulp.task('backstop_reference', () => backstop('reference'));
 gulp.task('backstop_test', () => backstop('test'));
@@ -859,25 +840,6 @@ One of the things Backstop does for you is manage all your screenshot files.  Ba
 }
 ```
 
-
-### Alternate way of taking a FULL PAGE SCREENSHOT
-Puppeteer has an unexpected way of implementing full-screen bitmap captures -- the current approach rerenders viewport contents and takes a single fullpage screenshot.  This is totally fine in most cases -- however some Backstop users have run into issues where this approach causes some of the scenario state to be lost (e.g. a hover state).  Our friend @sballesteros was kind enough to create a workaround for this. The alternate approach captures multiple areas of your screen (without rerendering) and then magically stitches the multiple shots together, giving you a reliable fullscreen representation.
-
-This approach will likely become the default method -- but until then -- if you're having issues with current full-screen capture, go ahead and try the alternate way with this...
-
-```js
-{
-  // ...
-  mergeImgHack: true,
-  // ...
-}
-```
-Let us know [here](https://github.com/garris/BackstopJS/issues/820) if this works for you!
-
-
-
-
-
 ## Developing, bug fixing, contributing...
 
 First off, You are awesome! Thanks for your interest, time and hard work!  Here are some tips...
@@ -947,14 +909,14 @@ See the next section for running the SMOKE TEST -- Please make sure this is work
 Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Please make sure you have node version 8 or above. Windows users: Powershell is recommended._
 
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs-playwright; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test
 
 ```
 
 Here is a sanity test which also uses docker...
 
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test --docker
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs-playwright; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test --docker
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
@@ -1009,7 +971,7 @@ Sometimes when developing scripts -- browser errors can actually cause Chrome-He
 
 ### The dreaded: _command-not-found_ error...
 
-Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install -g backstopjs`. If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the [local installation section](#local-installation) above for more info.
+Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install -g backstopjs-playwright`. If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the [local installation section](#local-installation) above for more info.
 
 ### Issues when installing
 
@@ -1076,7 +1038,6 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
     - [Setting the bitmap and script directory paths](#setting-the-bitmap-and-script-directory-paths)
     - [Changing the rendering engine](#changing-the-rendering-engine)
       - [Chrome-Headless (The latest webkit library)](#chrome-headless-the-latest-webkit-library)
-    - [Setting Puppeteer option flags](#setting-puppeteer-option-flags)
     - [Using Docker for testing across different environments](#using-docker-for-testing-across-different-environments)
       - [Requirements for when you're using docker...](#requirements-for-when-youre-using-docker)
     - [Integration options (local install)](#integration-options-local-install)
@@ -1137,7 +1098,6 @@ BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin
 - [Benjamin Blackwood](https://github.com/BBlackwo) documentation improvements for our win-based brothers and sisters plus fixing a massive bug with our --docker implementation,
 [Justin Heideman](https://github.com/justinph) better web-client report UI performance in version 3.5.3.
 - [Peter Krautzberger](https://github.com/pkra) improved error handling, [Vladislav Altanov](https://github.com/cactusabg) and [thumpmaster](https://github.com/thumpmaster) improving our screen capture compatibility, [Mikkel Rom Engholm](https://github.com/mikkelrom) improvements to our scrubber modal, [Xingxin Zeng](https://github.com/SBeator) making `expect` config property work, [Andrew Taylor](https://github.com/ataylorme) improvements to report opening -- version 3.2.
-- [Christopher Frank](https://github.com/krisdigital) for Puppeteer integration!✨
 - [@KenCoder](https://github.com/KenCoder), [@AkA84](https://github.com/AkA84), [@VesterDe](https://github.com/VesterDe), [Vladislav Altanov](https://github.com/cactusa), [Alice Young](https://github.com/aliceyoung9) for documentation, fixes, improved test hygene and support with 3.2 release
 - [Gabriele Mantovani](https://github.com/mantovanig) for our beautiful new UI in 3.1.0.
 - [Pavel Zbytovský](https://github.com/zbycz), [Đinh Quang Trung](https://github.com/trungdq88), [Dan Pettersson](https://github.com/deap82), [anton-kulagin](https://github.com/anton-kulagin), [Baltazardoung](https://github.com/Baltazardoung), [kiran-redhat](https://github.com/kiran-redhat), [lsuchanek](https://github.com/lsuchanek), [Michal Vyšinský](https://github.com/vysinsky), [Leonid Makarov](https://github.com/lmakarov), [Vladislav Dekov](https://github.com/vdekov) 3.0 post release fixes and features.
