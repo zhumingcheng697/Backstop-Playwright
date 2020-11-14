@@ -3,7 +3,7 @@ var fs = require('./fs');
 var each = require('./each');
 var pMap = require('p-map');
 
-var runPuppet = require('./runPlaywright');
+var runPlaywright = require('./runPlaywright');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
@@ -127,10 +127,12 @@ function delegateScenarios (config) {
 
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
-  if (config.engine.startsWith('puppet')) {
-    return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
+  if (!config.engine || config.engine.toLowerCase() === 'playwright') {
+    return pMap(scenarioViews, runPlaywright, { concurrency: asyncCaptureLimit });
+  } else if (config.engine.toLowerCase().startsWith('puppet')) {
+    logger.error(`Puppeteer is not supported in backstop-playwright. Please use standard backstopjs for puppeteer support.`);
   } else if (/chrom./i.test(config.engine)) {
-    logger.error(`Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.`);
+    logger.error(`Chromy is not supported in backstop-playwright. Please use backstopjs@4.x.x for chromy support.`);
   } else {
     logger.error(`Engine "${(typeof config.engine === 'string' && config.engine) || 'undefined'}" not recognized! If you require PhantomJS or Slimer support please use backstopjs@3.8.8 or earlier.`);
   }

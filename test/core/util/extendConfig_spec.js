@@ -3,8 +3,8 @@ var extendConfig = require('../../../core/util/extendConfig');
 
 describe('computeConfig_spec', function () {
   it('should override engine from config file', function () {
-    var actualConfig = extendConfig({ projectPath: process.cwd(), backstop: process.cwd() }, { engine: 'puppet' });
-    assert.strictEqual(actualConfig.engine, 'puppet');
+    var actualConfig = extendConfig({ projectPath: process.cwd(), backstop: process.cwd() }, { engine: 'playwright' });
+    assert.strictEqual(actualConfig.engine, 'playwright');
   });
 
   it('should override resembleOutputOptions from config file', function () {

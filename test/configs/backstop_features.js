@@ -1,5 +1,5 @@
-const ENGINE = 'puppet';
-const SCRIPT_PATH = 'puppet';
+const ENGINE = 'playwright';
+const SCRIPT_PATH = 'playwright';
 const URL = 'https://garris.github.io/BackstopJS';
 
 module.exports = {
@@ -239,6 +239,7 @@ module.exports = {
   report: ['browser', 'json'],
   engine: ENGINE,
   engineOptions: {
+    browserType: 'chromium',
     args: ['--no-sandbox']
   },
   asyncCaptureLimit: 10,
