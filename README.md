@@ -78,11 +78,11 @@ $ npm install -g backstop-playwright
 
 ## The BackstopJS workflow
 
-  - **`backstop init`:** Set up a new BackstopJS instance -- specify URLs, cookies, screen sizes, DOM selectors, interactions etc. (see examples directory)
+  - **`backstop-playwright init`:** Set up a new BackstopJS instance -- specify URLs, cookies, screen sizes, DOM selectors, interactions etc. (see examples directory)
 
-  - **`backstop test`:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any changes show up in a visual report. (Run this after making CSS changes as many times as needed.)
+  - **`backstop-playwright test`:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any changes show up in a visual report. (Run this after making CSS changes as many times as needed.)
 
-  -  **`backstop approve`:** If the test you ran looks good, then go ahead and approve it. Approving changes will update your reference files with the results from your last test.  Future tests are compared against your most recent approved test screenshots.
+  -  **`backstop-playwright approve`:** If the test you ran looks good, then go ahead and approve it. Approving changes will update your reference files with the results from your last test.  Future tests are compared against your most recent approved test screenshots.
 
 
 ## Getting started
@@ -110,7 +110,7 @@ BackstopJS can create a default configuration file and project scaffolding in yo
 `cd` to your project's directory and run...
 
 ```sh
-$ backstop init
+$ backstop-playwright init
 ```
 
 
@@ -130,7 +130,7 @@ Example: Create a backstop.config.js
 module.exports = { Same object as backstop.json }
 ```
 
-and then `backstop test --config="backstop.config.js"`
+and then `backstop-playwright test --config="backstop.config.js"`
 
 
 #### Required config properties
@@ -151,7 +151,7 @@ _TIP: no other SCENARIO properties are required. Other properties can just be ad
 ### Generating test bitmaps
 
 ```sh
-$ backstop test
+$ backstop-playwright test
 ```
 
 This will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
@@ -167,7 +167,7 @@ Pass a `--docker` flag to render your test in a Docker container -- this will he
 ### Approving changes
 
 ```sh
-$ backstop approve
+$ backstop-playwright approve
 ```
 
 When running this command, all images (with changes) from your most recent test batch will be promoted to your reference collection. Subsequent tests will be compared against your updated reference files.
@@ -428,7 +428,7 @@ BackstopJS recognizes two magic selectors: `document` and `viewport` -- these ca
 ### Comparing different endpoints (e.g. comparing staging and production)
 Pointing to different endpoints is easy. (e.g. to compare a production environment against a staging environment).
 
-You can create reference files (without previewing) by using the command `backstop reference`.  By default this command calls the `url` property specified in your config.  Optionally, you can add a `referenceUrl` property to your scenario configuration. If found, BackstopJS will use `referenceUrl` for screen grabs when running `$ backstop reference`.
+You can create reference files (without previewing) by using the command `backstop-playwright reference`.  By default this command calls the `url` property specified in your config.  Optionally, you can add a `referenceUrl` property to your scenario configuration. If found, BackstopJS will use `referenceUrl` for screen grabs when running `$ backstop-playwright reference`.
 
 ```js
 "scenarios": [
@@ -522,7 +522,7 @@ config:      the whole config object
 
 One testing approach to consider is incorporating BackstopJS into your build process and just let the CLI report run on each build or before each deploy.
 
-It's natural for your layout to break while you're in feature development -- in that case you might just run a `backstop test` when you feel things should be shaping up.
+It's natural for your layout to break while you're in feature development -- in that case you might just run a `backstop-playwright test` when you feel things should be shaping up.
 
 Use the `report` property in your config to enable or disable the respective properties. E.g. the following settings will open a browser and write a junit report.
 
@@ -538,7 +538,7 @@ You can also specify a json report:
 If you choose the CI-only reporting or even no reporting (CLI is always on) you can always enter the following command to see the latest test run report in the browser.
 
 ```sh
-$ backstop openReport
+$ backstop-playwright openReport
 ```
 
 #### Test report integration with a build system like Jenkins/Travis
@@ -546,7 +546,7 @@ $ backstop openReport
 The following config would enable the CI - report (*default: junit format*)
 
 ```json
-"report" : [ "CI" ],
+"report": [ "CI" ],
 ```
 
 The regression test report will be generated in the JUnit format and the report will be placed in the given directory (*default: [backstopjs dir]/test/ci_report/xunit.xml*).
@@ -555,10 +555,10 @@ You may customize the testsuite name and/or a report file (xunit.xml) path to yo
 
 ```js
 "paths": {
-  "ci_report" :  "backstop_data/ci_report"
+  "ci_report": "backstop_data/ci_report"
 },
 "ci": {
-  "format" :  "junit" ,
+  "format": "junit" ,
   "testReportFileName": "myproject-xunit", // in case if you want to override the default filename (xunit.xml)
   "testSuiteName" :  "backstopJS"
 },
@@ -628,7 +628,7 @@ Make sure Docker is running on your machine.  On MacOS there is a menu item that
 Then, simply add a `--docker` flag onto your commands. E.G...
 
 ```sh
-backstop test --docker
+backstop-playwright test --docker
 ```
 
 or for a local install
@@ -667,7 +667,7 @@ Using Backstop as a locally installed standalone app looks like this....
 npm install backstop-playwright
 
 # Then, run commands by directly calling the cli
-./node_modules/.bin/backstop test --config=<myConfigPath>
+./node_modules/.bin/backstop-playwright test --config=<myConfigPath>
 ```
 
 The more interesting case is calling backstop from another node app...
@@ -746,13 +746,13 @@ gulp.task('backstop_test', () => backstop('test'));
 
 #### Using npm run scripts
 
-When BackstopJS is installed locally, NPM will recognize the `backstop <command>` pattern originating from your own npm `package.json` scripts. The following would enable you to run the respective `npm <command>` commands locally in your project.
+When BackstopJS is installed locally, NPM will recognize the `backstop-playwright <command>` pattern originating from your own npm `package.json` scripts. The following would enable you to run the respective `npm <command>` commands locally in your project.
 
 ```json
 "scripts": {
-  "approve": "backstop approve",
-  "test": "backstop test",
-  "init": "backstop init"
+  "approve": "backstop-playwright approve",
+  "test": "backstop-playwright test",
+  "init": "backstop-playwright init"
 }
 ```
 
@@ -790,7 +790,7 @@ Use this when you...
 
 From your project directory...
 ```sh
-$ backstop reference
+$ backstop-playwright reference
 ```
 
 optional parameters
@@ -801,7 +801,7 @@ optional parameters
 
 ### Modifying output settings of image-diffs
 
-By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
+By specifying `resembleOutputOptions` in your `backstop.json` file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
 
 Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.json))
 
@@ -909,14 +909,14 @@ See the next section for running the SMOKE TEST -- Please make sure this is work
 Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Please make sure you have node version 8 or above. Windows users: Powershell is recommended._
 
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstop-playwright; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstop-playwright; ./node_modules/.bin/backstop-playwright init; ./node_modules/.bin/backstop-playwright test
 
 ```
 
 Here is a sanity test which also uses docker...
 
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstop-playwright; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test --docker
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstop-playwright; ./node_modules/.bin/backstop-playwright init; ./node_modules/.bin/backstop-playwright test --docker
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
@@ -971,7 +971,7 @@ Sometimes when developing scripts -- browser errors can actually cause Chrome-He
 
 ### The dreaded: _command-not-found_ error...
 
-Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install -g backstop-playwright`. If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the [local installation section](#local-installation) above for more info.
+Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install -g backstop-playwright`. If you installed *locally*, remember that the `backstop-playwright <command>` pattern will only be available to your npm scripts -- see the [local installation section](#local-installation) above for more info.
 
 ### Issues when installing
 
@@ -981,7 +981,6 @@ Sometimes bad permissions happen to good people. It's ok, this is a safe space. 
 ### Projects don't work when I share with other users or run in different environments.
 
 Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
-
 
 
 ---

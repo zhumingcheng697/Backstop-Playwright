@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A BackstopJS fork using Playwright as engine. Choose your own browser type.",
   "bin": {
-    "backstop": "./cli/index.js"
+    "backstop-playwright": "./cli/index.js"
   },
   "scripts": {
     "lint": "eslint 'compare/*.js' 'compare/src/**/*.js' 'core/**/*.js' 'cli/**/*.js' 'capture/**/*.js' 'test/**/*.js'",

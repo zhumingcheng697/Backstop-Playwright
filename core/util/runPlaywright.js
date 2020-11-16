@@ -55,12 +55,13 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const playwrightArgs = Object.assign(
     {},
     {
-      browserType: 'chromium',
       ignoreHTTPSErrors: true,
       headless: !config.debugWindow
     },
     config.engineOptions
   );
+
+  require('./resolveBrowserType')(config);
 
   const browser = await playwright.launch(playwrightArgs);
   const page = await browser.newPage();
