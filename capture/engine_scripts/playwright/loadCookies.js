@@ -18,15 +18,14 @@ module.exports = async (page, scenario) => {
 
   // SET COOKIES
   const setCookies = async () => {
-    return Promise.all(
-      cookies.map(async (cookie) => {
-        if (!['Strict', 'Lax', 'None'].includes(cookie.sameSite)) {
-          cookie.sameSite = 'None';
-        }
-        await page.context().addCookies([cookie]);
-      })
-    );
+    await page.context().addCookies(cookies.map((cookie) => {
+      if (!['Strict', 'Lax', 'None'].includes(cookie.sameSite)) {
+        cookie.sameSite = 'None';
+      }
+      return cookie;
+    }));
   };
+
   await setCookies();
   console.log('Cookie state restored with:', JSON.stringify(cookies, null, 2));
 };
