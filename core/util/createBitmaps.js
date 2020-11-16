@@ -128,6 +128,7 @@ function delegateScenarios (config) {
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
   if (!config.engine || config.engine.toLowerCase() === 'playwright') {
+    require('./resolveBrowserType')(config, true);
     return pMap(scenarioViews, runPlaywright, { concurrency: asyncCaptureLimit });
   } else if (config.engine.toLowerCase().startsWith('puppet')) {
     logger.error(`Puppeteer is not supported in backstop-playwright. Please use standard backstopjs for puppeteer support.`);

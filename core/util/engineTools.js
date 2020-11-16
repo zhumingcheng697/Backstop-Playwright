@@ -1,3 +1,5 @@
+const resolveBrowserType = require('./resolveBrowserType');
+
 function getMisMatchThreshHold (scenario, config) {
   if (typeof scenario.misMatchThreshold !== 'undefined') { return scenario.misMatchThreshold; }
   if (typeof config.misMatchThreshold !== 'undefined') { return config.misMatchThreshold; }
@@ -95,7 +97,7 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     cleanedSelectorName,
     viewport.vIndex,
     viewport.label,
-    (config.engineOptions && config.engineOptions.browserType) || 'chromium'
+    resolveBrowserType(config)
   );
   const referenceFilePath = config._bitmapsReferencePath + '/' + getFilename(
     config._fileNameTemplate,
@@ -107,7 +109,7 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     cleanedSelectorName,
     viewport.vIndex,
     viewport.label,
-    (config.engineOptions && config.engineOptions.browserType) || 'chromium'
+    resolveBrowserType(config)
   );
   const testFilePath = config._bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
 
