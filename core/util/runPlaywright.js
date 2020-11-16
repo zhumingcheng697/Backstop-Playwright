@@ -1,5 +1,5 @@
 const MERGE_IMG_SEGMENT_HEIGHT = 2000;
-const playwright = require('puppeteer');
+const playwright = require('playwright');
 
 const mergeImg = require('merge-img');
 const fs = require('./fs');
@@ -61,12 +61,11 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     config.engineOptions
   );
 
-  require('./resolveBrowserType')(config);
+  const browser = await playwright[require('./resolveBrowserType')(config)].launch(playwrightArgs);
+  const context = await browser.newContext();
+  const page = await context.newPage();
 
-  const browser = await playwright.launch(playwrightArgs);
-  const page = await browser.newPage();
-
-  await page.setViewport({ width: VP_W, height: VP_H });
+  await page.setViewportSize({ width: VP_W, height: VP_H });
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
@@ -125,13 +124,13 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
     // --- WAIT FOR SELECTOR ---
     if (scenario.readySelector) {
-      await page.waitFor(scenario.readySelector);
+      await page.waitForSelector(scenario.readySelector);
     }
     //
 
     // --- DELAY ---
     if (scenario.delay > 0) {
-      await page.waitFor(scenario.delay);
+      await page.waitForTimeout(scenario.delay);
     }
 
     // --- REMOVE SELECTORS ---
@@ -418,7 +417,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             const bodyHandle = await page.$('body');
             const boundingBox = await bodyHandle.boundingBox();
 
-            await page.setViewport({
+            await page.setViewportSize({
               width: Math.max(viewport.width, Math.ceil(boundingBox.width)),
               height: Math.max(viewport.height, Math.ceil(boundingBox.height))
             });
