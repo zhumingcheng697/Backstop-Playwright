@@ -20,10 +20,13 @@ module.exports = async (page, scenario) => {
   const setCookies = async () => {
     return Promise.all(
       cookies.map(async (cookie) => {
-        await page.setCookie(cookie);
+        if (!['Strict', 'Lax', 'None'].includes(cookie.sameSite)) {
+          cookie.sameSite = 'None';
+        }
+        await page.context().addCookies([cookie]);
       })
     );
-  }
+  };
   await setCookies();
   console.log('Cookie state restored with:', JSON.stringify(cookies, null, 2));
 };
