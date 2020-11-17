@@ -185,6 +185,7 @@ Scenario properties are described throughout this document and **processed seque
 
 ```js
 label                    // [required] Tag saved with your reference images
+context                  // Playwright context options. See https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions
 onBeforeScript           // Used to set up browser state e.g. cookies.
 cookiePath               // import cookies in JSON format (available with default onBeforeScript see setting cookies below)
 url                      // [required] The url of your app state

@@ -62,7 +62,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   );
 
   const browser = await playwright[require('./resolveBrowserType')(config)].launch(playwrightArgs);
-  const context = await browser.newContext();
+  const context = await browser.newContext({...scenario.context});
   const page = await context.newPage();
 
   await page.setViewportSize({ width: VP_W, height: VP_H });
