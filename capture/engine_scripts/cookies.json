@@ -1,7 +1,6 @@
 [
   {
-    "domain": ".www.yourdomain.com",
-    "path": "/",
+    "url": "https://www.yourdomain.com",
     "name": "yourCookieName",
     "value": "yourCookieValue",
     "expirationDate": 1798790400,

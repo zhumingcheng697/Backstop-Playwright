@@ -1,7 +1,6 @@
 [
   {
-    "domain": ".garris.github.io",
-    "path": "/",
+    "url": "https://garris.github.io",
     "name": "theLemurHasLanded",
     "value": "true",
     "expirationDate": 1798790400,
