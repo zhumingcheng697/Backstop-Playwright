@@ -27,7 +27,7 @@ function main () {
   }
 
   if (argsOptions.v || argsOptions.version) {
-    console.log('BackstopJS v' + version);
+    console.log('Backstop-Playwright v' + version);
     return;
   }
 
@@ -36,7 +36,7 @@ function main () {
   if (!commandName) {
     console.log(usage);
   } else {
-    console.log('BackstopJS v' + version);
+    console.log('Backstop-Playwright v' + version);
     runner(commandName, argsOptions).catch(function () {
       process.exitCode = 1;
     });
