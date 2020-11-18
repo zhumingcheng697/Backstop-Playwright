@@ -1,6 +1,6 @@
 {
   "name": "backstop-playwright",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A BackstopJS fork using Playwright as engine. Choose your own browser type.",
   "bin": {
     "backstop-playwright": "./cli/index.js"
