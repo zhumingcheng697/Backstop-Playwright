@@ -1,6 +1,6 @@
 # Backstop-Playwright
 
-**This is a fork of BackstopJS. This version uses Playwright instead of Puppeteer as the engine.**
+**This is a fork of [BackstopJS](https://github.com/garris/BackstopJS). This version uses [Playwright](https://github.com/Microsoft/playwright) instead of Puppeteer as the engine.**
 
 This version *should* work exactly like BackstopJS except you can explicitly declare a compatible browser type by specifying the `browserType` parameter `engineOptions` in your `backstop.json` config file, which accepts three values `"chromium"`, `"firefox"`, and `"webkit"`. The default fallback browser type will be Chromium.
 
